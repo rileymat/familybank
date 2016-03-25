@@ -5,3 +5,4 @@ run_server
 run_server_nginx
 *.conf
 cleanup.sh
+*~
