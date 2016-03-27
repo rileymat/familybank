@@ -5,23 +5,29 @@ from web_plugins.response import HtmlResponse
 from web_plugins.response import Redirect
 from web_plugins.response import OriginRedirect
 
+import account
+from database import get_db_connection
+
 is_logged_in = lambda request: "user" in request.session
 is_logged_out = lambda request: not is_logged_in(request)
 
 
-import sqlite3
+
 
 def logged_out_post(request):
 	username = request.form_data["username"]
 	password = request.form_data["password"]
-	db = sqlite3.connect('./bank.db')
+	db = get_db_connection()
 	c = db.cursor()
-	c.execute("SELECT * FROM users where username = ? AND password = ?", (username, password))
+	c.execute("SELECT user_id, username, email  FROM users where username = ? AND password = ?", (username, password))
 	result = c.fetchall()
 
 	if len(result) > 0:
 		response = OriginRedirect(request, "/")
 		request.session["user"] = result[0]
+		request.session["accounts"] = account.get_viewable_accounts(result[0]["user_id"])
+		print request.session["accounts"]
+
 	else:
 		response = Redirect("/login")
 
@@ -35,6 +41,7 @@ def logged_out_get(request):
 
 def logout(request):
 	del request.session["user"]
+	del request.session["accounts"]
 	return Redirect("/login")
 
 login_page_router = r.FirstMatchRouter()
