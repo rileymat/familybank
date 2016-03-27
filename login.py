@@ -1,3 +1,5 @@
+import bcrypt
+
 import web_plugins.router as r
 
 from web_plugins.response import HtmlTemplateResponse
@@ -19,15 +21,18 @@ def logged_out_post(request):
 	password = request.form_data["password"]
 	db = get_db_connection()
 	c = db.cursor()
-	c.execute("SELECT user_id, username, email  FROM users where username = ? AND password = ?", (username, password))
+	c.execute("SELECT user_id, username, email, password  FROM users where username = ?", (username,))
 	result = c.fetchall()
 
 	if len(result) > 0:
-		response = OriginRedirect(request, "/")
-		request.session["user"] = result[0]
-		request.session["accounts"] = account.get_viewable_accounts(result[0]["user_id"])
-		print request.session["accounts"]
-
+		hashed_password_bytes = result[0]["password"].encode('utf-8')
+		password_bytes = password.encode('utf-8')
+		if bcrypt.hashpw(password_bytes, hashed_password_bytes) == hashed_password_bytes:
+			response = OriginRedirect(request, "/")
+			request.session["user"] = result[0]
+			request.session["accounts"] = account.get_viewable_accounts(result[0]["user_id"])
+		else:
+			response = Redirect('/login');
 	else:
 		response = Redirect("/login")
 
