@@ -1,0 +1,51 @@
+{{>header}}
+ <div id="wrapper">
+        {{>navigation}}
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Accounts</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+			<div class="row">
+			{{#accounts}}
+			  <div class="col-lg-3">
+				   <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2> {{^account_name}} Account Number {{account_number}} {{/account_name}} {{#account_name}}{{account_name}}{{/account_name}}</h2>
+                        </div>
+                        <div class="panel-body">
+						  <div class="row">
+							<div class="col-lg-12">
+							  <h3>Account Balance: ${{balance}}</h3>
+							</div>
+						  </div>
+
+						  <div class="row">
+							<div class="col-lg-12">
+							<div class="row">
+							<div class="col-lg-4">
+							  <a href="/account/{{account_id}}/details"><i class="fa fa-bank fa-fw"></i> Details</a>
+							</div>
+							<div class="col-lg-4">
+							  <a href="/account/{{account_id}}/deposit"><i class="fa fa-plus-square fa-fw"></i> Deposit</a>
+							</div>
+							<div class="col-lg-4">
+							  <a href="/account/{{account_id}}/withdrawl"><i class="fa fa-minus-square fa-fw"></i> Withdrawl</a>
+							</div>
+							</div>
+							</div>
+						  </div>
+
+						</div>
+                    </div>
+			  </div>
+			{{/accounts}}
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+{{>footer}}

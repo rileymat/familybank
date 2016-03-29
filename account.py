@@ -4,6 +4,15 @@ from database import get_db_connection
 
 from money import Currency
 
+def get_account_permissions(user_id, account_id):
+	db = get_db_connection()
+	c = db.cursor()
+	c.execute("""SELECT p.name from account_permissions AS ap
+                 JOIN permissions as p ON p.permission_id = ap.permission_id
+                 WHERE ap.account_id = ? AND ap.user_id = ?""",(account_id, user_id))
+	permissions = c.fetchall()
+	return [p["name"] for p in permissions]
+
 def get_account_balance(account_id):
 	db = get_db_connection()
 	c = db.cursor()
@@ -14,6 +23,21 @@ def get_account_balance(account_id):
                    WHERE at.account_id = ?
 	          """, (account_id, ))
 	return Currency(c.fetchall()[0]["balance"])
+def get_account_name(account_id):
+	db = get_db_connection()
+	c = db.cursor()
+	c.execute("""SELECT name FROM account_name WHERE account_id = ?""", (account_id, ))
+	results = c.fetchall()
+	print str(results[0]["name"])  + " " + str(len(results))
+	result = results[0]["name"]
+	print result
+	return results[0]["name"] if len(results) == 1 else ""
+
+def get_account_number(account_id):
+	db = get_db_connection()
+	c = db.cursor()
+	c.execute("""SELECT account_number FROM accounts WHERE account_id = ?""", (account_id, ))
+	return c.fetchall()[0]["account_number"]
 
 def get_viewable_accounts(user_id):
 	db = get_db_connection()

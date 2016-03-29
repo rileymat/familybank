@@ -1,7 +1,7 @@
 import web_plugins.router as r
 
 import login
-import summary
+import home
 import details
 import deposit
 import withdrawl
@@ -18,7 +18,7 @@ router = r.FirstMatchRouter()
 router.routes.extend(
 	[ static_router,
 	  login.login_router,
-	  summary.router,
+	  home.router,
 	  deposit.router,
 	  withdrawl.router,
 	  details.router,

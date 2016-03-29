@@ -1,15 +1,32 @@
 import web_plugins.router as r
-from web_plugins.response import HtmlTemplateResponse
+from web_plugins.response import HtmlTemplateResponse, HtmlResponse
 from web_plugins.response import Redirect
 
-from account import get_account_balance
+import account
+
 from money import Currency
 
 
 def details(request):
-	response = HtmlTemplateResponse('summary.mustache')
-	response.arguments = {'account_balance': get_account_balance(request.session["accounts"][0])}
+	response = HtmlTemplateResponse('details.mustache')
+	response.arguments = {'details': "hello " + request.params["account_id"]}
 	return response
 
+details_router = r.FirstMatchRouter()
+
+def can_view(request):
+	permissions = account.get_account_permissions(request.session["user"]["user_id"], request.params["account_id"])
+	return 'view' in permissions
+
+def unauthorized(request):
+	response = HtmlResponse()
+	response.response_text = "Unauthorized"
+	return response
+
+details_router.routes.extend([
+	r.LambdaRoute(lambda request: not can_view(request), unauthorized),
+	r.Route(details)
+])
+
 router = r.FirstMatchRouter()
-router.routes.extend([r.ExactRoute('/details', details)])
+router.routes.extend([r.RegexRoute('/account/(?P<account_id>\w+)/details', details_router)])
