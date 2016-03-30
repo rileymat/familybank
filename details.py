@@ -6,10 +6,9 @@ import account
 
 from money import Currency
 
-
 def details(request):
 	response = HtmlTemplateResponse('details.mustache')
-	response.arguments = {'details': "hello " + request.params["account_id"]}
+	response.arguments = {'transactions': account.get_account_transactions(request.params["account_id"])}
 	return response
 
 details_router = r.FirstMatchRouter()

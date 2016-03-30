@@ -8,7 +8,7 @@ from money import Currency
 
 def withdrawl(request):
 	response = HtmlTemplateResponse('withdrawl.mustache')
-	response.arguments = {'account_balance': account.get_account_balance(request.session["accounts"][0])}
+	response.arguments = {'account_name': account.get_account_name(request.params["account_id"])}
 	return response
 
 

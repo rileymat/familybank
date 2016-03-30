@@ -4,6 +4,18 @@ from database import get_db_connection
 
 from money import Currency
 
+def get_account_transactions(account_id):
+	db = get_db_connection()
+	c = db.cursor()
+	c.execute("""SELECT ts.name as source, at.amount AS amount, tt.name AS type, at.timestamp AS timestamp  FROM account_transactions AS at
+                 JOIN transaction_types AS tt ON tt.transaction_type_id = at.transaction_type_id
+                 JOIN transaction_source as ts ON ts.source_id = at.source_id
+	             WHERE account_id = ? ORDER BY timestamp DESC""",(account_id, ))
+	account_transactions = c.fetchall()
+	for a in account_transactions:
+		a["amount"] = Currency(a["amount"])
+	return account_transactions
+
 def get_account_permissions(user_id, account_id):
 	db = get_db_connection()
 	c = db.cursor()
