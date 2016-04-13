@@ -11,6 +11,10 @@ def deposit(request):
 	response.arguments = {'account_name': account.get_account_name(request.params["account_id"])}
 	return response
 
+def make_deposit(request):
+	request.session["feedback"] = ["Sucessful deposit"]
+	response = Redirect('/')
+	return response
 
 deposit_router = r.FirstMatchRouter()
 
@@ -25,7 +29,8 @@ def unauthorized(request):
 
 deposit_router.routes.extend([
 	r.LambdaRoute(lambda request: not can_deposit(request), unauthorized),
-	r.Route(deposit)
+	r.MethodRoute("post", make_deposit),
+	r.MethodRoute("get", deposit)
 ])
 
 
