@@ -6,9 +6,19 @@ import account
 
 from money import Currency
 
+def generate_descriptions(transactions):
+	for transaction in transactions:
+		if transaction["source"] == "Automatic Deposit":
+			transaction["description"] = "Automatic Deposit"
+		elif transaction["source"] == "user" and transaction["transaction_user"] is not None:
+			transaction["description"] = transaction["type"].capitalize() + " from " + transaction["transaction_user"].capitalize()
+		else:
+			transaction["description"] = "unknown"
+	return transactions
 def details(request):
 	response = HtmlTemplateResponse('details.mustache')
-	response.arguments = {'transactions': account.get_account_transactions(request.params["account_id"])}
+	transactions = generate_descriptions(account.get_account_transactions(request.params["account_id"]))
+	response.arguments = {'transactions': transactions}
 	return response
 
 details_router = r.FirstMatchRouter()

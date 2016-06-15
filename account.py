@@ -7,9 +7,11 @@ from money import Currency
 def get_account_transactions(account_id):
 	db = get_db_connection()
 	c = db.cursor()
-	c.execute("""SELECT ts.name as source, at.amount AS amount, tt.name AS type, at.timestamp AS timestamp  FROM account_transactions AS at
+	c.execute("""SELECT ts.name as source, at.amount AS amount, tt.name AS type, at.timestamp AS timestamp, u.username AS transaction_user FROM account_transactions AS at
                  JOIN transaction_types AS tt ON tt.transaction_type_id = at.transaction_type_id
                  JOIN transaction_source as ts ON ts.source_id = at.source_id
+	             LEFT JOIN account_transaction_user as atu ON at.transaction_id = atu.transaction_id
+                 LEFT JOIN users as u ON u.user_id = atu.user_id
 	             WHERE account_id = ? ORDER BY timestamp DESC""",(account_id, ))
 	account_transactions = c.fetchall()
 	for a in account_transactions:

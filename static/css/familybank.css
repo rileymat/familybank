@@ -32,3 +32,8 @@ h2 .panel-default > .panel-heading
 {
 	font-weight:700;
 }
+
+.transaction-type
+{
+    text-transform: capitalize;
+}
