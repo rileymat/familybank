@@ -18,32 +18,28 @@
                         </div>
                         <div class="panel-body">
 						  <div class="row">
-							<div class="details-col-header col-lg-2">
+							<div class="details-col-header col-xs-3">
 								Time
 							  </div>
-							  <div class="details-col-header col-lg-2">
-								Type
-							  </div>
-							  <div class="details-col-header col-lg-2">
+							  <div class="details-col-header col-xs-6">
 								Description
 							  </div>
-							  <div class="details-col-header col-lg-2">
+							  <div class="details-col-header col-xs-3">
 								Amount
 							  </div>
 							</div>
 
 						  {{#transactions}}
-							<div class="row">
-							  <div class="col-lg-2">
-								{{timestamp}}
+							<div class="row transaction-detail">
+							  <div class="col-xs-3">
+								<div class="details-datetime">
+								  <div class="details-date">{{date}}</div> <div class="details-time">{{time}}</div>
+								</div>
 							  </div>
-							  <div class="transaction-type col-lg-2">
-								{{type}}
-							  </div>
-							  <div class="col-lg-2">
+							  <div class="col-xs-6 details-description">
 								{{description}}
 							  </div>
-							  <div class="col-lg-2">
+							  <div class="col-xs-3 details-amount">
 								{{amount}}
 							  </div>
 							</div>

@@ -37,3 +37,36 @@ h2 .panel-default > .panel-heading
 {
     text-transform: capitalize;
 }
+.transaction-detail
+{
+	#margin:auto;
+}
+
+.transaction-detail.row:nth-of-type(odd)
+{
+    background: #e0e0e0;
+}
+.details-datetime
+{
+	padding:5px;
+}
+.details-date
+{
+	display: block;
+	white-space:nowrap;
+}
+.details-time
+{
+	display:block;
+	white-space:nowrap;
+}
+
+.details-description
+{
+	padding-top:13px;
+
+}
+.details-amount
+{
+	padding-top:13px;
+}

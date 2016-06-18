@@ -5,15 +5,21 @@ from web_plugins.response import Redirect
 import account
 
 from money import Currency
+from datetime import datetime
+
 
 def generate_descriptions(transactions):
 	for transaction in transactions:
 		if transaction["source"] == "Automatic Deposit":
 			transaction["description"] = "Automatic Deposit"
 		elif transaction["source"] == "user" and transaction["transaction_user"] is not None:
-			transaction["description"] = transaction["type"].capitalize() + " from " + transaction["transaction_user"].capitalize()
+			transaction["description"] = transaction["type"].capitalize() + " By " + transaction["transaction_user"].capitalize()
 		else:
 			transaction["description"] = "unknown"
+		transaction_timestamp = transaction["timestamp"]
+		transaction_datetime = datetime.strptime(transaction_timestamp, '%Y-%m-%d %H:%M:%S')
+		transaction["date"] = transaction_datetime.strftime("%-m-%-d-%y")
+		transaction["time"] = transaction_datetime.strftime("%-I:%M %p")
 	return transactions
 def details(request):
 	response = HtmlTemplateResponse('details.mustache')
