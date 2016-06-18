@@ -7,7 +7,7 @@ import account
 from money import Currency
 
 def withdrawl(request):
-	response = HtmlTemplateResponse('deposit.mustache')
+	response = HtmlTemplateResponse('withdrawl.mustache')
 	response.arguments = {'account_name': account.get_account_name(request.params["account_id"])}
 	return response
 
