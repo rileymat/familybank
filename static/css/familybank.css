@@ -48,7 +48,8 @@ h2 .panel-default > .panel-heading
 }
 .details-datetime
 {
-	padding:5px;
+	padding-top: 5px;
+	padding-bottom:5px;
 }
 .details-date
 {
@@ -64,6 +65,7 @@ h2 .panel-default > .panel-heading
 .details-description
 {
 	padding-top:13px;
+	white-space:nowrap;
 
 }
 .details-amount
