@@ -72,3 +72,10 @@ h2 .panel-default > .panel-heading
 {
 	padding-top:13px;
 }
+
+.navbar-right
+{
+	position: absolute;
+	top:0px;
+	right:0px;
+}
