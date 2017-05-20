@@ -9,7 +9,7 @@ from money import Currency
 
 def deposit(request):
 	response = HtmlTemplateResponse('deposit.mustache')
-	response.arguments = {'account_name': account.get_account_name(request.params["account_id"])}
+	response.arguments = account.Account(request.params["account_id"])
 	return response
 
 def make_deposit(request):

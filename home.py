@@ -11,11 +11,7 @@ def summary(request):
 	accounts = request.session["accounts"]
 	account_data = []
 	for a in accounts:
-		info = {}
-		info["balance"] = account.get_account_balance(a)
-		info["account_number"] = account.get_account_number(a)
-		info["account_name"] = account.get_account_name(a)
-		info["account_id"] = a
+		info = account.Account(a)
 		account_data.append(info)
 	response.arguments = {'accounts': account_data}
 	return response
