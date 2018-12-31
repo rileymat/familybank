@@ -24,6 +24,12 @@ class Transaction(object):
 	def __init__(self, id):
 		if id is not None:
 			self.id = id
+			transaction = get_transaction(id)
+			self.source = transaction["source"]
+			self.amount = transaction["amount"]
+			self.type = transaction["type"]
+			self.timestamp = transaction["timestamp"]
+			self.user = transaction["user"]
 
 def get_account_transaction_ids(account_id):
 	values = query_rows("""SELECT transaction_id FROM account_transactions WHERE account_id = ? ORDER BY timestamp DESC""",(account_id,))
@@ -31,6 +37,15 @@ def get_account_transaction_ids(account_id):
 	for v in values:
 		account_ids.append(v["transaction_id"])
 	return account_ids
+
+def get_transaction(transaction_id):
+	transaction = query_row("""SELECT ts.name AS source, at.amount AS amount, tt.name AS type, at.timestampe AS timestamp, u.username AS trnasaction_user FROM account_transactions AS at
+                 JOIN transaction_types AS tt ON tt.transaction_type_id = at.transaction_type_id
+                 JOIN transaction_source as ts ON ts.source_id = at.source_id
+	             LEFT JOIN account_transaction_user as atu ON at.transaction_id = atu.transaction_id
+                 LEFT JOIN users as u ON u.user_id = atu.user_id
+                 WHERE at.transaction_id = ?""", (transaction_id, ))
+	return transaction
 
 
 def get_account_transactions(account_id):

@@ -21,9 +21,10 @@ def generate_descriptions(transactions):
 		transaction["date"] = transaction_datetime.strftime("%-m-%-d-%y")
 		transaction["time"] = transaction_datetime.strftime("%-I:%M %p")
 	return transactions
+
 def details(request):
 	response = HtmlTemplateResponse('details.mustache')
-	transactions = generate_descriptions(account.get_account_transactions(request.params["account_id"]))
+	transactions = account.Transactions(request.params["account_id"])
 	response.arguments = {'transactions': transactions}
 	return response
 
